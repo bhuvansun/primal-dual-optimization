@@ -1,4 +1,4 @@
-function alpha = primal_dual_tikhonov(K, y, lambda, mu, delta, tol, max_iters)
+function [alpha, cost, error] = primal_dual(K, y, lambda, mu, delta, tol, max_iters)
     n = size(K, 1);
     alpha = zeros(n, 1);
     % v = alpha;
@@ -6,8 +6,10 @@ function alpha = primal_dual_tikhonov(K, y, lambda, mu, delta, tol, max_iters)
     
     eta = 1;
     % theta = 1;
+    cost = zeros(max_iters, 1);
+    error = zeros(max_iters, 1);
     
-    for iter = 1:max_iters
+    for i = 1:max_iters
         alpha_new = (eye(n) + eta * lambda * K) \ (alpha - eta * K' * z);
         
         theta_new = sqrt(1 / (1 + 2 * mu * delta));
@@ -22,8 +24,11 @@ function alpha = primal_dual_tikhonov(K, y, lambda, mu, delta, tol, max_iters)
         
         err = norm(K * v - y, 2)^2 / norm(y, 2)^2;
         
+        cost(i) = err.^2/max_iters;
+        error(i) = err;
+
         if err < tol
-            disp(['Converged after ', num2str(iter), ' iterations.'])
+            disp(['Converged after ', num2str(i), ' iterations.'])
             break;
         end
     end
