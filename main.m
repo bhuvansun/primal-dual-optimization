@@ -127,15 +127,6 @@ ylabel('Error');
 
 sgtitle("Gradient Descent");
 
-%% Stochastic Gradient Descent
-
-
-
-
-
-
-
-
 %% Adam Boost
 
 % [optimal_x, min_loss, approximated_function, x_values, cost_values, error_values, y_values_original, y_values_approximated] = adam_optimization();
